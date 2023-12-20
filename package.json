@@ -1,0 +1,27 @@
+{
+  "name": "cloudphoto",
+  "version": "1.0.0",
+  "exports": "./dist/main.js",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.478.0",
+    "aws-sdk": "^2.1523.0",
+    "commander": "^11.1.0",
+    "glob": "^10.3.10",
+    "inquirer": "^9.2.12"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.7",
+    "@types/node": "^20.9.0",
+    "prettier": "^3.0.3",
+    "typescript": "^5.3.3"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/main.js"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=16"
+  },
+  "packageManager": "yarn@4.0.2"
+}
