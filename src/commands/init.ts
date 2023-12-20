@@ -1,21 +1,31 @@
-import inquirer, { QuestionCollection } from "inquirer";
 import fs from "fs";
+import path from "path";
+import inquirer, { QuestionCollection } from "inquirer";
+import os from "os";
+import ini from "ini";
 
-export default function init() {
+export default async function init() {
   const questions: QuestionCollection = [
-    { name: "AWS_ACCESS_KEY_ID", message: "AWS Access Key ID" },
-    { name: "AWS_SECRET_ACCESS_KEY", message: "AWS Secret Access Key" },
-    { name: "BUCKET_NAME", message: "Bucket Name", default: "bucket" },
+    { name: "aws_access_key_id", type: "input", message: "Access key ID:" },
+    { name: "aws_secret_access_key", type: "input", message: "Secret access key:" },
+    { name: "bucket", type: "input", message: "Bucket name:", default: "bucket" },
   ];
-  inquirer.prompt(questions).then(answers => {
-    fs.writeFileSync(
-      process.env.HOME + "/.config/cloudphoto/cloudphotorc",
-      `[DEFAULT]
-aws_access_key_id = ${answers.AWS_ACCESS_KEY_ID}
-aws_secret_access_key = ${answers.AWS_SECRET_ACCESS_KEY}
-bucket = ${answers.BUCKET_NAME}
-region = ru-central1a
-endpoint_url = https://storage.yandexcloud.net`
-    );
-  });
+
+  const answers = await inquirer.prompt(questions);
+
+  const configuration = {
+    DEFAULT: {
+      ...answers,
+      region: "ru-central1",
+      endpoint_url: "https://storage.yandexcloud.net",
+    },
+  };
+
+  const configPath = path.join(os.homedir(), ".config", "cloudphoto");
+
+  fs.mkdirSync(configPath, { recursive: true });
+
+  fs.writeFileSync(path.join(configPath, "cloudphotorc"), ini.stringify(configuration));
+
+  console.log("Configuration file saved successfully.");
 }
