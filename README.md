@@ -4,14 +4,15 @@
 
 1. Установить `nodejs`.
 
-**Linux** `sudo apt install nodejs` \
+**Ubuntu** `sudo snap install node --classic --channel=18` \
+**Debian** `sudo apt install nodejs` \
 **Windows** `winget install -e --id OpenJS.NodeJS`
 
-Проверьте, что версия `>16` через `node --version`.
+Проверьте, что версия `>18` через `node --version`.
 
 2. Установить зависимости проекта.
 
-> Изначально проект разрабатывался с использованием пакетного менеджера `yarn`, но можно и быстро через `npm`
+> Изначально проект разрабатывался с использованием пакетного менеджера `yarn`, но можно и быстро через `npm` (не рекомендуется)
 > <details>
 >   <summary>Вариант через `yarn` если необходимо</summary>
 > 
@@ -23,6 +24,8 @@
 **NPM** `npm i` \
 **Yarn** `yarn`
 
+Если установка `node` была через `snap`, то `yarn` уже должен быть установлен.
+
 3. Скомпилировать проект
 
 **NPM** `npm run build` \
@@ -31,7 +34,8 @@
 4. Запустить проект
 
 **NPM** `npm start` \
-**Yarn** `yarn start`
+**Yarn** `yarn start` \
+**Напрямую, без пакетного менеджера** `node ./dist/main`
 
 5. (необязательно) Добавить alias для запуска CLI из любой папки
 
