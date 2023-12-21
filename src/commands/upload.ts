@@ -20,11 +20,10 @@ export default async function upload(options: { album?: string; path?: string })
 
   for (const imageName of imageNames) {
     try {
-      await uploadFile({
+      await bucketClient.uploadFile({
         bucket: config.bucket,
         filePath: path.resolve(directory, imageName),
         key: `${options.album}/${path.basename(imageName)}`,
-        client: bucketClient,
       });
     } catch (err) {
       console.warn(`Cannot upload ${imageName}: ${(<Error>err).message ?? err}`);

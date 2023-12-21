@@ -38,11 +38,10 @@ ${Object.keys(albums)
     </ul>
 </body>`;
 
-  await uploadHTML({
+  await bucketClient.uploadHTML({
     bucket: config.bucket,
     filename: `index.html`,
     content: index_html,
-    client: bucketClient,
   });
 
   let i = 1;
@@ -72,11 +71,10 @@ ${fileNames.map(fileName => `            <img src="${album}/${fileName}" data-ti
     </body>
 </html>`;
 
-    await uploadHTML({
+    await bucketClient.uploadHTML({
       bucket: config.bucket,
       filename: `album${i++}.html`,
       content: album_html,
-      client: bucketClient,
     });
   }
 }

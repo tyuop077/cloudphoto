@@ -1,17 +1,16 @@
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import BucketClient from "./bucketClient.js";
 
-interface Options {
+export interface UploadHTMLOptions {
   content: string;
   bucket: string;
   filename: string;
-  client: BucketClient;
 }
 
-export const uploadHTML = async (options: Options) => {
+export const uploadHTML = async (client: BucketClient, options: UploadHTMLOptions) => {
   const buffer = Buffer.from(await new Blob([options.content], { type: "text/html" }).arrayBuffer());
 
-  await options.client.send(
+  await client.send(
     new PutObjectCommand({
       Bucket: options.bucket,
       Key: options.filename,
