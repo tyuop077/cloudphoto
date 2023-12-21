@@ -1,4 +1,4 @@
-import { ListObjectsV2Command, PutObjectCommand } from "@aws-sdk/client-s3";
+import { ListObjectsV2Command } from "@aws-sdk/client-s3";
 import { readConfig } from "../utils/config.js";
 import BucketClient from "../utils/bucketClient.js";
 import { groupByAlbum } from "../utils/groupByAlbum.js";
