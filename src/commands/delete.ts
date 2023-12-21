@@ -1,4 +1,4 @@
-import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { readConfig } from "../utils/config.js";
 import BucketClient from "../utils/bucketClient.js";
 

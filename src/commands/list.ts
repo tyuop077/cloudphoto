@@ -1,4 +1,4 @@
-import { S3Client, ListObjectsV2Command } from "@aws-sdk/client-s3";
+import { ListObjectsV2Command } from "@aws-sdk/client-s3";
 import { readConfig } from "../utils/config.js";
 import BucketClient from "../utils/bucketClient.js";
 

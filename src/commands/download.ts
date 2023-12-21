@@ -1,4 +1,4 @@
-import { S3Client, GetObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3";
+import { GetObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3";
 import { Readable } from "stream";
 import { pipeline } from "node:stream/promises";
 import fs from "fs";
