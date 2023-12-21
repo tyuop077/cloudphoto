@@ -33,11 +33,14 @@ ${Object.keys(albums)
     </ul>
 </body>`;
 
+  const buffer = Buffer.from(await new Blob([index_html], { type: "text/html" }).arrayBuffer());
+
   await bucketClient.send(
     new PutObjectCommand({
       Bucket: config.bucket,
       Key: `index.html`,
-      Body: index_html,
+      Body: buffer,
+      ContentType: "text/html",
     })
   );
 
