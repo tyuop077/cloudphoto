@@ -2,6 +2,7 @@ import { ListObjectsV2Command, PutObjectCommand } from "@aws-sdk/client-s3";
 import { readConfig } from "../utils/config.js";
 import BucketClient from "../utils/bucketClient.js";
 import { groupByAlbum } from "../utils/groupByAlbum.js";
+import { uploadHTML } from "../utils/uploadHTML.js";
 
 export default async function mksite() {
   const config = readConfig();
@@ -33,16 +34,12 @@ ${Object.keys(albums)
     </ul>
 </body>`;
 
-  const buffer = Buffer.from(await new Blob([index_html], { type: "text/html" }).arrayBuffer());
-
-  await bucketClient.send(
-    new PutObjectCommand({
-      Bucket: config.bucket,
-      Key: `index.html`,
-      Body: buffer,
-      ContentType: "text/html",
-    })
-  );
+  await uploadHTML({
+    bucket: config.bucket,
+    filename: `index.html`,
+    content: index_html,
+    client: bucketClient,
+  });
 
   /*for (const [album, fileNames] of Object.entries(albums)) {
   }*/
