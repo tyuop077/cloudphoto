@@ -32,4 +32,6 @@ program
   .option("-p, --photo [photo]", "photo name")
   .action(commands.delete);
 
+program.command("mksite").description("generate static website").action(commands.mksite);
+
 program.parse(process.argv);
