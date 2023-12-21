@@ -3,15 +3,12 @@ import fs from "fs";
 import { glob } from "glob";
 import path from "path";
 import { readConfig } from "../utils/config.js";
+import { getDirectory } from "../utils/directory.js";
 
 export default async function upload(options: { album?: string; path?: string }) {
   if (!options.album) throw new Error("Album was not provided");
-  const directory = options.path ?? process.cwd();
 
-  if (!fs.existsSync(directory)) {
-    throw new Error(`Directory does not exist: ${directory}`);
-  }
-
+  const directory = getDirectory(options.path);
   const config = readConfig();
 
   const s3Client = new S3Client({ region: "ru-central1a" });
