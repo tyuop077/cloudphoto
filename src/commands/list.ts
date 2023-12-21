@@ -1,18 +1,25 @@
 import { S3Client, ListObjectsV2Command } from "@aws-sdk/client-s3";
+import { readConfig } from "../utils/config.js";
 
 export default async function list(options: { album?: string }) {
-  const s3Client = new S3Client({ region: "ru-central1a" });
+  if (!options.album) throw new Error("Album was not provided");
 
-  const params = {
-    Bucket: process.env.BUCKET_NAME,
-    Prefix: options.album ?? "",
-  };
+  const config = readConfig();
 
-  const data = await s3Client.send(new ListObjectsV2Command(params));
+  const s3Client = new S3Client({ region: config.region });
 
-  if (!data.Contents) throw new Error("TODO");
+  const data = await s3Client.send(
+    new ListObjectsV2Command({
+      Bucket: process.env.BUCKET_NAME,
+      Prefix: options.album ? `${options.album}/` : "",
+    })
+  );
 
-  data.Contents.forEach(file => {
+  if (!data.Contents) throw new Error(`No ${options.album ? "images" : "albums"} found`);
+
+  for (const file of data.Contents) {
+    if (!file.Key) return;
+
     console.log(file.Key);
-  });
+  }
 }
