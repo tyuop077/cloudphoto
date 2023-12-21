@@ -8,15 +8,15 @@ program.command("init").description("initialize the CloudPhoto").action(commands
 program
   .command("upload")
   .description("upload photos to an album")
-  .option("-p, --photos [photos]", "photos directory")
   .option("-a, --album [album]", "album name")
+  .option("-p, --path [photos]", "photos directory")
   .action(commands.upload);
 
 program
   .command("download")
   .description("download photos from an album")
-  .option("-p, --photos [photos]", "photos directory")
   .option("-a, --album [album]", "album name")
+  .option("-p, --path [photos]", "photos directory")
   .action(commands.download);
 
 program
