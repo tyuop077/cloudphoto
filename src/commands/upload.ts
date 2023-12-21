@@ -16,7 +16,6 @@ export default async function upload(options: { album?: string; path?: string })
   const imageNames = await glob("*.{png,jpg,jpeg,webm}", {
     cwd: directory,
   });
-  console.log({ directory, imageNames });
 
   if (imageNames.length === 0) throw new Error(`No images was found in ${directory}`);
 
