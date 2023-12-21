@@ -13,16 +13,16 @@
 
 > Изначально проект разрабатывался с использованием пакетного менеджера `yarn`, но можно и быстро через `npm`
 
+**NPM** `npm i` \
+**Yarn** `yarn`
+
 <details>
   <summary>Вариант через `yarn` если необходимо</summary>
 
-  **Linux и Windows** `npm i -g yarn && yarn set version stable && yarn install` 
+  **Linux и Windows** `npm i -g yarn && yarn set version stable && yarn install`
 
   Ubuntu APT не имеет последнюю версию `yarn`, поэтому в данном случае самым простым способом будет установить старую версию с `npm` и обновить её до последней через `yarn`.
 </details>
-
-**NPM** `npm i` \
-**Yarn** `yarn`
 
 3. Скомпилировать проект
 
