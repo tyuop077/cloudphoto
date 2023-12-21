@@ -1,6 +1,6 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import fs from "fs";
-import { Glob } from "glob";
+import { glob } from "glob";
 import path from "path";
 import { readConfig } from "../utils/config.js";
 
@@ -15,9 +15,11 @@ export default async function upload(options: { album?: string; path?: string })
   const config = readConfig();
 
   const s3Client = new S3Client({ region: "ru-central1a" });
-  const imageNames = new Glob(directory + "/*.{png,jpg,jpeg,webm}", {});
+  const imageNames = await glob(directory + "/*.{png,jpg,jpeg,webm}", {});
 
-  for await (const imageName of imageNames) {
+  if (imageNames.length === 0) throw new Error(`No images was found in ${directory}`);
+
+  for (const imageName of imageNames) {
     const fileStream = fs.createReadStream(imageName);
 
     try {
