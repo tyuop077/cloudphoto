@@ -13,12 +13,15 @@ export default async function upload(options: { album?: string; path?: string })
   const config = readConfig();
 
   const bucketClient = new BucketClient(config);
-  const imageNames = await glob(directory + "/*.{png,jpg,jpeg,webm}", {});
+  const imageNames = await glob("*.{png,jpg,jpeg,webm}", {
+    cwd: directory,
+  });
+  console.log({ directory, imageNames });
 
   if (imageNames.length === 0) throw new Error(`No images was found in ${directory}`);
 
   for (const imageName of imageNames) {
-    const fileStream = fs.createReadStream(imageName);
+    const fileStream = fs.createReadStream(path.resolve(directory, imageName));
 
     try {
       const data = await bucketClient.send(

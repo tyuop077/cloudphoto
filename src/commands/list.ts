@@ -3,15 +3,13 @@ import { readConfig } from "../utils/config.js";
 import BucketClient from "../utils/bucketClient.js";
 
 export default async function list(options: { album?: string }) {
-  if (!options.album) throw new Error("Album was not provided");
-
   const config = readConfig();
 
   const bucketClient = new BucketClient(config);
 
   const data = await bucketClient.send(
     new ListObjectsV2Command({
-      Bucket: process.env.BUCKET_NAME,
+      Bucket: config.bucket,
       Prefix: options.album ? `${options.album}/` : "",
     })
   );
