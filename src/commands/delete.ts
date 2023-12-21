@@ -16,7 +16,6 @@ export default async function remove(options: { album?: string; photo?: string }
         Key: options.photo ? `${options.album}/${options.photo}` : `${options.album}/`,
       })
     );
-    console.log("Success");
   } catch (err) {
     if (options.photo) {
       throw new Error("Image was not found");
