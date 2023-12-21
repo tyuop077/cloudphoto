@@ -1,8 +1,7 @@
-import { ListObjectsV2Command } from "@aws-sdk/client-s3";
+import { ListObjectsV2Command, PutBucketWebsiteCommand } from "@aws-sdk/client-s3";
 import { readConfig } from "../utils/config.js";
 import BucketClient from "../utils/bucketClient.js";
 import { groupByAlbum } from "../utils/groupByAlbum.js";
-import { uploadHTML } from "../utils/uploadHTML.js";
 import { onlyFolders } from "../utils/onlyFolders.js";
 
 export default async function mksite() {
@@ -44,6 +43,23 @@ ${Object.keys(albums)
     content: index_html,
   });
 
+  const error_html = `<!doctype html>
+<html>
+    <head>
+        <title>Фотоархив</title>
+    </head>
+<body>
+    <h1>Ошибка</h1>
+    <p>Ошибка при доступе к фотоархиву. Вернитесь на <a href="index.html">главную страницу</a> фотоархива.</p>
+</body>
+</html>`;
+
+  await bucketClient.uploadHTML({
+    bucket: config.bucket,
+    filename: `error.html`,
+    content: error_html,
+  });
+
   let i = 1;
 
   for (const [album, fileNames] of Object.entries(albums)) {
@@ -77,4 +93,20 @@ ${fileNames.map(fileName => `            <img src="${album}/${fileName}" data-ti
       content: album_html,
     });
   }
+
+  await bucketClient.send(
+    new PutBucketWebsiteCommand({
+      Bucket: config.bucket,
+      WebsiteConfiguration: {
+        IndexDocument: {
+          Suffix: "index.html",
+        },
+        ErrorDocument: {
+          Key: "error.html",
+        },
+      },
+    })
+  );
+
+  console.log(`https://${config.bucket}.website.yandexcloud.net/`);
 }
