@@ -1,6 +1,7 @@
 import { ListObjectsV2Command } from "@aws-sdk/client-s3";
 import { readConfig } from "../utils/config.js";
 import BucketClient from "../utils/bucketClient.js";
+import { onlyFolders } from "../utils/onlyFolders.js";
 
 export default async function list(options: { album?: string }) {
   const config = readConfig();
@@ -17,7 +18,7 @@ export default async function list(options: { album?: string }) {
   if (!data.Contents) throw new Error(`No ${options.album ? "images" : "albums"} found`);
 
   // "album/file.png"
-  const items = data.Contents.map(file => <string>file.Key).filter(Boolean);
+  const items = onlyFolders(data.Contents.map(file => <string>file.Key).filter(Boolean));
 
   // если альбом, то берём вторую часть (file.png), иначе первую (album)
   // Set - чтобы возвращать только уникальные значения (для альбомов)
