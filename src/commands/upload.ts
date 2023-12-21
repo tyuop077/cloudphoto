@@ -1,10 +1,9 @@
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import fs from "fs";
 import { glob } from "glob";
 import path from "path";
 import { readConfig } from "../utils/config.js";
 import { getDirectory } from "../utils/directory.js";
 import BucketClient from "../utils/bucketClient.js";
+import { uploadFile } from "../utils/uploadFile.js";
 
 export default async function upload(options: { album?: string; path?: string }) {
   if (!options.album) throw new Error("Album was not provided");
@@ -20,16 +19,13 @@ export default async function upload(options: { album?: string; path?: string })
   if (imageNames.length === 0) throw new Error(`No images was found in ${directory}`);
 
   for (const imageName of imageNames) {
-    const fileStream = fs.createReadStream(path.resolve(directory, imageName));
-
     try {
-      const data = await bucketClient.send(
-        new PutObjectCommand({
-          Bucket: config.bucket,
-          Key: `${options.album}/${path.basename(imageName)}`,
-          Body: fileStream,
-        })
-      );
+      await uploadFile({
+        bucket: config.bucket,
+        filePath: path.resolve(directory, imageName),
+        key: `${options.album}/${path.basename(imageName)}`,
+        client: bucketClient,
+      });
     } catch (err) {
       console.warn(`Cannot upload ${imageName}: ${(<Error>err).message ?? err}`);
     }
