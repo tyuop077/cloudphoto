@@ -3,7 +3,7 @@ import ini from "ini";
 import path from "path";
 import os from "os";
 
-interface Config {
+export interface Config {
   bucket: string;
   awsAccessKeyId: string;
   awsSecretAccessKey: string;

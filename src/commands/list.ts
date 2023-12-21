@@ -1,14 +1,15 @@
 import { S3Client, ListObjectsV2Command } from "@aws-sdk/client-s3";
 import { readConfig } from "../utils/config.js";
+import BucketClient from "../utils/bucketClient.js";
 
 export default async function list(options: { album?: string }) {
   if (!options.album) throw new Error("Album was not provided");
 
   const config = readConfig();
 
-  const s3Client = new S3Client({ region: config.region });
+  const bucketClient = new BucketClient(config);
 
-  const data = await s3Client.send(
+  const data = await bucketClient.send(
     new ListObjectsV2Command({
       Bucket: process.env.BUCKET_NAME,
       Prefix: options.album ? `${options.album}/` : "",
