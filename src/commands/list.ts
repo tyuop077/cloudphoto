@@ -16,9 +16,11 @@ export default async function list(options: { album?: string }) {
 
   if (!data.Contents) throw new Error(`No ${options.album ? "images" : "albums"} found`);
 
-  for (const file of data.Contents) {
-    if (!file.Key) return;
+  // "album/file.png"
+  const items = data.Contents.map(file => <string>file.Key).filter(Boolean);
 
-    console.log(file.Key);
-  }
+  // если альбом, то берём вторую часть (file.png), иначе первую (album)
+  // Set - чтобы возвращать только уникальные значения (для альбомов)
+  const values = new Set(items.map(file => file.split("/")[options.album ? 1 : 0]));
+  console.log(Array.from(values).join("\n"));
 }
