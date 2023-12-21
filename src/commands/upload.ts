@@ -3,7 +3,6 @@ import path from "path";
 import { readConfig } from "../utils/config.js";
 import { getDirectory } from "../utils/directory.js";
 import BucketClient from "../utils/bucketClient.js";
-import { uploadFile } from "../utils/uploadFile.js";
 
 export default async function upload(options: { album?: string; path?: string }) {
   if (!options.album) throw new Error("Album was not provided");
