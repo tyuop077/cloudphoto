@@ -1,4 +1,4 @@
-import { ListObjectsV2Command, PutBucketWebsiteCommand } from "@aws-sdk/client-s3";
+import { ListObjectsV2Command, PutBucketAclCommand, PutBucketWebsiteCommand } from "@aws-sdk/client-s3";
 import { readConfig } from "../utils/config.js";
 import BucketClient from "../utils/bucketClient.js";
 import { groupByAlbum } from "../utils/groupByAlbum.js";
@@ -90,6 +90,8 @@ ${fileNames.map(fileName => `            <img src="${album}/${fileName}" data-ti
       content: album_html,
     });
   }
+
+  await bucketClient.send(new PutBucketAclCommand({ Bucket: config.bucket, ACL: "public-read" }));
 
   await bucketClient.send(
     new PutBucketWebsiteCommand({
