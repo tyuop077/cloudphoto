@@ -20,9 +20,6 @@ export default async function mksite() {
 
   const albums = groupByAlbum(onlyFolders(dataList.Contents.map(file => <string>file.Key).filter(Boolean)));
 
-  console.log(dataList.Contents.map(file => <string>file.Key).filter(Boolean));
-  console.log(albums);
-
   const index_html = `<!doctype html>
 <html>
     <head>
